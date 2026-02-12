@@ -44,3 +44,14 @@ tasks.withType(org.gradle.api.plugins.quality.Pmd).configureEach {
         html.required = true
     }
 }
+
+tasks.register('copySonarLibraries', Copy) {
+    from(configurations.compileClasspath)
+    into("$buildDir/sonar-libs/main")
+}
+
+tasks.register('copySonarTestLibraries', Copy) {
+    from(configurations.testCompileClasspath)
+    into("$buildDir/sonar-libs/test")
+}
+
