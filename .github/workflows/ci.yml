@@ -2,7 +2,9 @@ name: CI
 
 on:
   push:
+    branches: [main]
   pull_request:
+    branches: [main]
 
 permissions:
   contents: read
@@ -41,6 +43,9 @@ jobs:
           path: |
             build/reports
             build/test-results
+
+      - name: Prepare Sonar libraries
+        run: ./gradlew --no-daemon copySonarLibraries copySonarTestLibraries
 
       - name: SonarCloud Scan
         if: ${{ env.SONAR_TOKEN != '' }}
