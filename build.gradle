@@ -30,7 +30,8 @@ pmd {
     toolVersion = "7.0.0-rc4"
 
     consoleOutput = true
-    ruleSetFiles = files("config/pmd/ruleset.xml")
+    ruleSetFiles = files("config.pmd/ruleset.xml")
+    ruleSets = []
 }
 
 tasks.named('test') {
