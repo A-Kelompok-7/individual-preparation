@@ -2,6 +2,9 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '4.0.2'
 	id 'io.spring.dependency-management' version '1.1.7'
+
+	id 'pmd'
+	id'jacoco'
 }
 
 group = 'com.example'
@@ -24,6 +27,46 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
+pmd {
+	toolVersion = "7.0.0-rc4"
+
+	consoleOutput = true
+	ruleSetFiles = files("config.pmd/ruleset.xml")
+	ruleSets = []
+}
+
+jacoco {
+	toolVersion = "0.8.12"
+}
+
+tasks.named('jacocoTestReport') {
+	dependsOn tasks.named('test')
+	reports {
+		xml.required = true
+		html.required = true
+		csv.required = false
+	}
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
+	finalizedBy tasks.named('jacocoTestReport')
+}
+
+tasks.withType(org.gradle.api.plugins.quality.Pmd).configureEach {
+	ignoreFailures = false
+	reports {
+		xml.required = true
+		html.required = true
+	}
+}
+
+tasks.register('copySonarLibraries', Copy) {
+	from(configurations.compileClasspath)
+	into("$buildDir/sonar-libs/main")
+}
+
+tasks.register('copySonarTestLibraries', Copy) {
+	from(configurations.testCompileClasspath)
+	into("$buildDir/sonar-libs/test")
 }
