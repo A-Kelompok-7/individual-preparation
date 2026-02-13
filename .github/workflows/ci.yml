@@ -3,10 +3,10 @@ name: CI
 on:
   push:
     branches:
-      - nadia/cicd
+      - main
   pull_request:
     branches:
-      - nadia/cicd
+      - main
 
 permissions:
   contents: read
