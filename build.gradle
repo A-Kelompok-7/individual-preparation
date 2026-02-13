@@ -23,7 +23,9 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
-	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+	implementation 'com.fasterxml.jackson.core:jackson-databind'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.boot:spring-boot-starter-web'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
@@ -46,6 +48,11 @@ tasks.named('jacocoTestReport') {
         html.required = true
         csv.required = false
     }
+    classDirectories.setFrom(files(classDirectories.files.collect {
+        fileTree(dir: it, exclude: [
+            '**/IndividualprepApplication.class'
+        ])
+    }))
 }
 
 tasks.named('test') {
